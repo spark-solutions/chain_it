@@ -1,5 +1,3 @@
-require 'chainer/version'
-
 class Chainer
   def chain
     return self if @skip
@@ -12,3 +10,5 @@ class Chainer
     @result
   end
 end
+
+require 'chainer/version'
