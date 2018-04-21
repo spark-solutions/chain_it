@@ -1,4 +1,4 @@
-require "chainer/version"
+require 'chainer/version'
 
 class Chainer
   def chain
