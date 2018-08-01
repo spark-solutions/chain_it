@@ -9,8 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = %w[btolarz nnande]
   spec.email         = ['btolarz@gmail.com']
 
-  spec.summary       = 'TODO write a short summary here'
-  spec.description   = 'TODO write a longer summary here'
+  spec.summary       = 'A tool for executing successive tasks in a railway-oriented manner'
+  spec.description   = "It can successfully replace conceptually similar libraries like Dry-transaction. It's all because of the simplicity its code offers."
   spec.homepage      = 'https://github.com/spark-solutions/chainer'
   spec.license       = 'MIT'
 
@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_development_dependency 'bundler', '~> 1.15'
+  spec.add_development_dependency 'bundler', '~> 1.14'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 end
