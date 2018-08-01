@@ -10,6 +10,28 @@ RSpec.describe Chainer do
     end
   end
 
+  describe '#skip_next' do
+    context 'when passed block evaluates to true' do
+      it 'skips the next #chain execution' do
+	expect(service_object).not_to receive(:call)
+
+	subject.skip_next { true }.
+	        chain { service_object.call }
+      end
+    end
+
+    context 'when passed block evaluates to false' do
+      it 'does not skip the next #chain execution' do
+       	expect(service_object).to receive(:call)
+
+        subject.skip_next { false }.
+                chain { service_object.call }
+      end
+    end
+  end
+
+  xdescribe '#on_error' do; end 
+
   describe '#result' do
     let(:result_object2) { double('result object 2', failure?: false, value: false) }
     let(:service_object2) { double('service object 2', call: result_object2) }
@@ -25,7 +47,7 @@ RSpec.describe Chainer do
     context 'when some chain is failed' do
       let(:result_object) { double('result object', failure?: true, value: false) }
 
-      it 'returns the last chain\'s response' do
+      it 'returns the last successful chain\'s response' do
         expect(subject.chain { service_object.call }.
                        chain { service_object2.call }.
                        result).to eq result_object

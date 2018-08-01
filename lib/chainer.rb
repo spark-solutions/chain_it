@@ -13,7 +13,8 @@ class Chainer
   end
 
   def skip_next
-    @skip_next = yield
+    return self if @skip
+    @skip_next = yield @result&.value
     self
   end
 
