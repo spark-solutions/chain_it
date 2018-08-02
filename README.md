@@ -1,38 +1,60 @@
 # Chainer
+[![CircleCI](https://circleci.com/gh/spark-solutions/chainer/tree/master.svg?style=svg&circle-token=3bb16aef0dbcbe7fd18500376a110bd6cedf668a)](https://circleci.com/gh/spark-solutions/chainer/tree/master)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/chainer`. To experiment with that code, run `bin/console` for an interactive prompt.
+## Description
+This provides the tool which is implementation of railway-oriented programming concept itself
+(Read more on this <a href="https://fsharpforfunandprofit.com/rop">here</a>).
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'chainer'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install chainer
+Ideally suited for executing task sequences that should be immediately interrupted when any subsequen task fails.
 
 ## Usage
+Everything comes down to chaining subsequent `#chain` method calls to a `Chainer` object instance.
 
-TODO: Write usage instructions here
+The gem supports design-by-contract programming concept - assuming every block related to `#chain` have to return both `#value` and `#failure?` aware object.We reccomend using Struct for that purpouse.
 
-## Development
+```ruby
+Result = Struct.new(:success, :value) do
+  def failure?
+    !success
+  end
+end
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+```
+### Examples
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+```ruby
+# Basic flow explanation
+success = ->(value) { Result.new(true, value) }
 
+Chainer.new.
+        chain { success.call 2 }.               #=> The subsequent chain will be triggered
+        chain { |num| success.call(num * 2) }.  #=> We can pass the previous block evaluation as the block argument
+        chain { |num| success.call(num * 2) }.
+        result.
+        value                                   #=> 8
+  
+# Working with #skip_next
+Chainer.new.
+        chain { success.call 2 }.               
+        skip_next { |num| num == 2 }.           #=> The next chain will be skipped conditionally since block returns true
+        chain { success.call 8 }.              
+        chain { |num| success.call(num * 2) }.  #=> The block argument is the last executed #chain value
+        result.
+        value                                   #=> 4
+
+# Dealing with a failure
+failure = ->(value) { Result.new(false, value) }
+
+Chainer.new.
+        chain { success.call 2 }.
+        chain { failure.call 0 }.               #=> All later #chain calls will be skipped
+        chain { success.call 4 }.
+        result.
+        value                                   #=> 0 
+```
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/chainer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/spark-solutions/chainer.
 
 ## License
 
