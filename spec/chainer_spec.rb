@@ -30,7 +30,7 @@ RSpec.describe Chainer do
     end
   end
 
-  xdescribe '#on_error' do; end 
+  xdescribe '#on_error' do; end
 
   describe '#result' do
     let(:result_object2) { double('result object 2', failure?: false, value: false) }
@@ -92,6 +92,6 @@ RSpec.describe Chainer do
   end
 
   it 'has a version number' do
-    expect(Chainer::VERSION).to eq '0.1.0'
+    expect(Chainer::VERSION).to eq '1.0.0'
   end
 end
