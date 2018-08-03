@@ -1,4 +1,4 @@
-class Chainer
+class ChainIt
   def chain
     if @skip_next
       @skip_next = false
@@ -30,4 +30,4 @@ class Chainer
   end
 end
 
-require 'chainer/version'
+require 'chain_it/version'

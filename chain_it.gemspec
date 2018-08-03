@@ -1,27 +1,18 @@
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'chainer/version'
+require 'chain_it/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'chainer'
-  spec.version       = Chainer::VERSION
+  spec.name          = 'chainit'
+  spec.version       = ChainIt::VERSION
   spec.authors       = %w[btolarz nnande]
   spec.email         = ['btolarz@gmail.com']
 
   spec.summary       = 'A tool for executing successive tasks in a railway-oriented manner'
   spec.description   = "It can successfully replace conceptually similar libraries like Dry-transaction. It's all because of the simplicity its code offers."
-  spec.homepage      = 'https://github.com/spark-solutions/chainer'
+  spec.homepage      = 'https://github.com/spark-solutions/chain_it'
   spec.license       = 'MIT'
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise 'RubyGems 2.0 or newer is required to protect against ' \
-      'public gem pushes.'
-  end
 
   spec.files = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
