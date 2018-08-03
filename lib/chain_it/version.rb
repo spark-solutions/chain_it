@@ -1,3 +1,3 @@
-class Chainer
+class ChainIt
   VERSION = '1.0.0'.freeze
 end

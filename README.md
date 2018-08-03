@@ -1,5 +1,5 @@
-# Chainer
-[![CircleCI](https://circleci.com/gh/spark-solutions/chainer/tree/master.svg?style=svg&circle-token=3bb16aef0dbcbe7fd18500376a110bd6cedf668a)](https://circleci.com/gh/spark-solutions/chainer/tree/master)
+# ChainIt
+[![CircleCI](https://circleci.com/gh/spark-solutions/ChainIt/tree/master.svg?style=svg&circle-token=3bb16aef0dbcbe7fd18500376a110bd6cedf668a)](https://circleci.com/gh/spark-solutions/ChainIt/tree/master)
 
 ## Description
 This provides the tool which is implementation of railway-oriented programming concept itself
@@ -8,7 +8,7 @@ This provides the tool which is implementation of railway-oriented programming c
 Ideally suited for executing task sequences that should be immediately interrupted when any subsequen task fails.
 
 ## Usage
-Everything comes down to chaining subsequent `#chain` method calls to a `Chainer` object instance.
+Everything comes down to chaining subsequent `#chain` method calls to a `ChainIt` object instance.
 
 The gem supports design-by-contract programming concept - assuming every block related to `#chain` have to return both `#value` and `#failure?` aware object.We reccomend using Struct for that purpouse.
 
@@ -26,15 +26,15 @@ end
 # Basic flow explanation
 success = ->(value) { Result.new(true, value) }
 
-Chainer.new.
+ChainIt.new.
         chain { success.call 2 }.               #=> The subsequent chain will be triggered
         chain { |num| success.call(num * 2) }.  #=> We can pass the previous block evaluation as the block argument
         chain { |num| success.call(num * 2) }.
         result.
         value                                   #=> 8
-  
+
 # Working with #skip_next
-Chainer.new.
+ChainIt.new.
         chain { success.call 2 }.               
         skip_next { |num| num == 2 }.           #=> The next chain will be skipped conditionally since block returns true
         chain { success.call 8 }.              
@@ -45,16 +45,16 @@ Chainer.new.
 # Dealing with a failure
 failure = ->(value) { Result.new(false, value) }
 
-Chainer.new.
+ChainIt.new.
         chain { success.call 2 }.
         chain { failure.call 0 }.               #=> All later #chain calls will be skipped
         chain { success.call 4 }.
         result.
-        value                                   #=> 0 
+        value                                   #=> 0
 ```
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/spark-solutions/chainer.
+Bug reports and pull requests are welcome on GitHub at https://github.com/spark-solutions/chain_it.
 
 ## License
 

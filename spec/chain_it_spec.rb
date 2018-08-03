@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-RSpec.describe Chainer do
+RSpec.describe ChainIt do
   let(:result_object) { double('result object', failure?: false, value: true) }
   let(:service_object) { double('service object', call: result_object) }
 
@@ -92,6 +92,6 @@ RSpec.describe Chainer do
   end
 
   it 'has a version number' do
-    expect(Chainer::VERSION).to eq '1.0.0'
+    expect(ChainIt::VERSION).to eq '1.0.0'
   end
 end
