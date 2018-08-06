@@ -9,12 +9,35 @@ RSpec.describe ChainIt do
       expect(subject.chain { service_object.call }).to eq subject
     end
 
-    context 'when block responds with invalid object' do
+    context 'when the block responds with invalid object' do
       let(:result_object) { Struct.new('Result') }
 
       it 'responds with self explanatory error' do
         expect { subject.chain { service_object.call } }.
           to raise_error(StandardError, ChainIt::INVALID_RESULT_MSG)
+      end
+    end
+
+    context 'when the code within the block raises error' do
+      subject { described_class.new(opts) }
+      before { allow(subject).to receive(:result_value).and_raise }
+
+      context 'with :auto_exception_handling mode' do
+        context 'enabled' do
+	  let(:opts) { { auto_exception_handling: true } }
+
+       	  it 'rescues the error' do
+	    expect { subject.chain { service_object.call } }.not_to raise_error
+	  end
+        end
+
+        context 'disabled' do
+          let(:opts) { { auto_exception_handling: false } }
+
+	  it 're-raises the error' do
+ 	    expect { subject.chain { service_object.call } }.to raise_error
+          end
+        end
       end
     end
   end
