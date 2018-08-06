@@ -8,6 +8,15 @@ RSpec.describe ChainIt do
     it 'always returns it\'s receiver' do
       expect(subject.chain { service_object.call }).to eq subject
     end
+
+    context 'when block responds with invalid object' do
+      let(:result_object) { Struct.new('Result') }
+
+      it 'responds with self explanatory error' do
+        expect { subject.chain { service_object.call } }.
+          to raise_error(StandardError, ChainIt::INVALID_RESULT_MSG)
+      end
+    end
   end
 
   describe '#skip_next' do
