@@ -1,5 +1,10 @@
 class ChainIt
+  DEFAULT_SETTINGS = { auto_exception_handling: false }.freeze
   INVALID_RESULT_MSG = "ChainIt#chain block must return both #value and #failure? aware object.\n Check documentation: https://github.com/spark-solutions/chain_it#usage"
+	
+  def initialize(settings = {})
+    @settings = DEFAULT_SETTINGS.merge(settings)
+  end
 
   def chain
     if @skip_next
@@ -13,6 +18,11 @@ class ChainIt
     @result = yield result_value
     @skip = true if result_failure?
     self
+
+  rescue StandardError => e
+    raise e unless @settings[:auto_exception_handling]
+    @result = e
+    @skip = true
   end
 
   def skip_next
